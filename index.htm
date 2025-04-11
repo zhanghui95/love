@@ -294,14 +294,56 @@
 	<div class="nojavascript">您的浏览器禁用了javascript，无法正常浏览本页面</div>
 	
 
-	<audio id="bgmMusic" src="lovebgm.mp3" autoplay="autoplay" loop preload="auto" type="audio/mp3"></audio>
+<!-- 	<audio id="bgmMusic" src="lovebgm.mp3" autoplay="autoplay" loop preload="auto" type="audio/mp3"></audio> -->
 
 	
 	<script src="jquery.min.js" tppabs="http://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
 	<script src="all.min.js" ></script>
 	<script src="love.min.js" ></script>
-	<div class="mPower"><span id="on" title="点击暂停" style=""></span><span id="off" title="点击播放"  style=""></span></div>
+<!-- 	<div class="mPower"><span id="on" title="点击暂停" style=""></span><span id="off" title="点击播放"  style=""></span></div> -->
 
+	<!-- 音频标签 -->
+    <audio id="bgmMusic" src="lovebgm.mp3" loop preload="auto" type="audio/mp3" muted></audio>
+ 
+    <!-- 控制按钮 -->
+    <div class="mPower">
+        <span id="on" title="点击暂停" style="cursor:pointer;">🎶 暂停</span>
+        <span id="off" title="点击播放" style="cursor:pointer; display:none;">⏸️ 播放</span>
+    </div>
+ 
+    <script>
+        $(document).ready(function () {
+            const audio = $('#bgmMusic')[0]; // 获取音频元素
+            const $on = $('#on'); // 暂停按钮
+            const $off = $('#off'); // 播放按钮
+ 
+            // 初始尝试播放（静音模式，避免被浏览器阻止）
+            audio.play().catch(err => {
+                console.warn('自动播放被阻止，需要用户交互', err);
+            });
+ 
+            // 播放按钮点击事件
+            $off.on('click', function () {
+                audio.muted = false; // 取消静音
+                audio.play().then(() => {
+                    console.log('播放成功');
+                    $on.show(); // 显示暂停按钮
+                    $off.hide(); // 隐藏播放按钮
+                }).catch(err => {
+                    console.error('播放失败', err);
+                });
+            });
+ 
+            // 暂停按钮点击事件
+            $on.on('click', function () {
+                audio.pause();
+                console.log('暂停成功');
+                $on.hide(); // 隐藏暂停按钮
+                $off.show(); // 显示播放按钮
+            });
+        });
+    </script>
+	
 	
 </body>
 </html>
